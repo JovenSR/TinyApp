@@ -28,15 +28,22 @@ app.get("/urls", (req, res) => {
   res.render("urls_index", templateVars);
 });
 
+app.post("/urls/:id/delete", (req, res) => {
+  console.log('delete');
+  delete urlDatabase[req.params.id];
+  res.redirect('/urls');
+})
+
 app.get("/urls/new", (req, res) => {
   res.render("urls_new");
+
 });
 
 app.post("/urls", (req, res) => {
   console.log(req.body);  // debug statement to see POST parameters
   var shortUrl = generateRandomString();
   urlDatabase[shortUrl] = req.body.longURL;
-  res.redirect(urlDatabase[shortUrl]);         // Respond with 'Ok' (we will replace this)
+  res.redirect('/urls');         // Respond with 'Ok' (we will replace this)
 });
 
 app.get("/u/:shortURL", (req, res) => {
