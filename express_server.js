@@ -2,7 +2,9 @@ var express = require("express");
 var app = express();
 var PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
+const cookieParser = require('cookie-parser');
 app.use(bodyParser.urlencoded({extended: true}));
+app.use(cookieParser());
 
 app.set("view engine", "ejs");
 
@@ -23,9 +25,29 @@ var urlDatabase = {
   "9sm5xK": "http://www.google.com"
 };
 
+app.post("/login", (req, res) => {
+
+  var username = req.body.username;
+  res.cookie('username',username);
+  //var templateVars = { urls: urlDatabase, username: username};
+  res.redirect('/urls');
+
+})
+
+app.post("/logout", (req, res) => {
+  res.clearCookie('username');
+  res.redirect("/urls");
+})
+
 app.get("/urls", (req, res) => {
-  let templateVars = { urls: urlDatabase };
-  res.render("urls_index", templateVars);
+
+  // if(req.cookie["username"]===undefined){
+  //   console.log("hi there ");
+  // }
+  console.log("rohit test :",req.cookies);
+  let templateVars;
+  templateVars = { urls: urlDatabase, username: req.cookies["username"] };
+  res.render("urls_index",templateVars);
 });
 
 app.post("/urls/:id/delete", (req, res) => {
@@ -35,7 +57,8 @@ app.post("/urls/:id/delete", (req, res) => {
 })
 
 app.get("/urls/new", (req, res) => {
-  res.render("urls_new");
+  var templateVars = {username: req.cookies["username"]};
+  res.render("urls_new", templateVars);
 
 });
 
@@ -46,6 +69,7 @@ app.post("/urls", (req, res) => {
   res.redirect('/urls');         // Respond with 'Ok' (we will replace this)
 });
 
+
 app.get("/u/:shortURL", (req, res) => {
   let longURL = req.body.longURL;
   res.redirect(longURL);
@@ -54,15 +78,18 @@ app.get("/u/:shortURL", (req, res) => {
 app.get("/urls/:id", (req, res) => {
   let templateVars = {
     shortURL: req.params.id,
-    longURL: urlDatabase[req.params.id]
+    longURL: urlDatabase[req.params.id],
+    username: req.cookies["username"]
   };
   res.render("urls_show", templateVars);
 });
 
+
+
 app.post("/urls/:id", (req, res) => {
   urlDatabase[req.params.id] = req.body.longURL;
   console.log(urlDatabase);
-  res.redirect('/urls')
+  res.redirect('/urls');
 });
 
 app.get("/hello", (req, res) => {
