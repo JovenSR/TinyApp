@@ -3,6 +3,7 @@ const app = express();
 const PORT = 8080; // default port 8080
 const bodyParser = require("body-parser");
 const cookieParser = require('cookie-parser');
+const bcrypt = require('bcrypt');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieParser());
 app.set("view engine", "ejs");
@@ -37,7 +38,7 @@ function checkEmail(email){
   return flag;
 }
 
-function checkPassword(email, password){
+function checkPassword(email){
   for(var key in users) {
     if(users[key].email===email) {
       var id = users[key].password;
@@ -72,6 +73,7 @@ app.post("/register", (req, res) => {
   let userID = generateRandomString();
   let email = req.body.email
   let password = req.body.password
+  var hashedPassword = bcrypt.hashSync(password, 10);
 
   //check for the existing Email
   if(checkEmail(req.body.email)){
@@ -79,7 +81,7 @@ app.post("/register", (req, res) => {
     const newUser = {
       id : userID,
       email : email,
-      password : password
+      password : hashedPassword
     }
     //Add the new user
     users[userID] = newUser;
@@ -101,7 +103,7 @@ app.post("/login", (req, res) => {
   if(checkEmail(req.body.email)) {
     res.status(403).send("That email is not registered with us. Please create an acoount");
   } else if
-    (checkEmail(req.body.email) === false &&  checkPassword(req.body.email, req.body.password) !== req.body.password) {
+    (checkEmail(req.body.email) === false && bcrypt.compareSync(req.body.password, checkPassword(req.body.email)) === false) {
       res.status(403).send('Incorrect password');
     } else {
       for(var key in users) {
@@ -205,3 +207,6 @@ app.get("/", (req, res) => {
 app.listen(PORT, () => {
   console.log(`Example app listening on port ${PORT}!`);
 });
+
+
+
