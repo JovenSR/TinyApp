@@ -1,11 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <title><TinyApp></title>
-</head>
-<body>
-  <header>TinyApp</header>
+
+  Welcome <%= user %>
+  <p>
+    <% if(!user){ %>
+    <form method="POST" action="/login">
+      <li><a href="/login" class="btn-btn-primary">Login</a></li>
+      <li><a href="/register" class="btn-btn-primary">Register</a></li>
+    </form>
+
+    <% } else{ %>
+    <form method="POST" action="/logout">
+
+      <button type="submit">Logout</button>
+    </form>
+
+   <% }  %>
 
 
-</body>
-</html>
+
+  </p>
+
+
+
