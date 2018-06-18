@@ -4,14 +4,9 @@ TinyApp is a full stack web application built with Node and Express that allows 
 
 ## Final Product
 
-!["Screenshot of create Short URL page"]
+!["Screenshot of create Short URL page"](https://github.com/JovenSR/TinyApp/blob/master/docs/Screen%20Shot%202018-06-17%20at%209.31.55%20PM.png?raw=true)
 
-(https://github.com/JovenSR/TinyApp/blob/master/docs/Screen%20Shot%202018-06-17%20at%209.31.55%20PM.png?raw=true)
-
-
-!["Screenshot of URLs page"]
-
-(https://github.com/JovenSR/TinyApp/blob/master/docs/Screen%20Shot%202018-06-17%20at%209.32.37%20PM.png?raw=true)
+!["Screenshot of URLs page"](https://github.com/JovenSR/TinyApp/blob/master/docs/Screen%20Shot%202018-06-17%20at%209.32.37%20PM.png?raw=true)
 
 
 
