@@ -6,7 +6,6 @@ const cookieSession = require('cookie-session');
 const bcrypt = require('bcrypt');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(cookieSession({
-  // maxAge: 24 * 60 * 60 * 1000,
   keys: ["nsbsjdbsjsnsjdb"]
 }));
 app.set("view engine", "ejs");
@@ -29,7 +28,6 @@ function checkEmail(email){
   for(var key in users){
     if(users[key].email===email){
       flag = false;
-      // console.log("it matched email");
     }
   }
   return flag;
@@ -74,7 +72,6 @@ app.post("/register", (req, res) => {
 
   //check for the existing Email
   if(checkEmail(req.body.email)){
-    // console.log("user email does not exist, you can register");
     const newUser = {
       id : userID,
       email : email,
@@ -83,7 +80,6 @@ app.post("/register", (req, res) => {
     //Add the new user
     users[userID] = newUser;
     req.session.user_id = users[userID].id
-    // res.cookie('user_id', users[userID].id);
     console.log(users);
     res.redirect('/urls');
 
