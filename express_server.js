@@ -195,7 +195,7 @@ app.get("/urls.json", (req, res) => {
 })
 
 app.get("/", (req, res) => {
-  res.send("Hello!");
+  res.render("registration");
 });
 
 app.listen(PORT, () => {
